@@ -19,6 +19,7 @@ from PyQt6.QtGui import *
 from os.path import *
 # custom packages
 from ComSelect import *
+from AMG8833 import *
 from MLX90614 import *
 from VLD53L4CD import *
 from Userdef import *
@@ -70,8 +71,30 @@ class MainTask(QWidget):
         # ************************************************************************************************************ #
         # Temp #1 Setup (= )
         if self.setup == "Temp. #1":
-            print("[ERR] Setup not implemented yet")
-            sys.exit(0)
+            # -------------------------------------------------------------------------------------------------------- #
+            # Estimation of data rate transmission used for nice beginning of plot and not totally inaccurate time basis
+            # on plots
+            self.time = 100
+            # -------------------------------------------------------------------------------------------------------- #
+            t_min, t_max = dialog.get_range()
+            # -------------------------------------------------------------------------------------------------------- #
+            self.Temp1Board = Temp1Setup(port_name=com_port,
+                                         debug_mode=self.debug_mode,
+                                         t_min=t_min, t_max=t_max)
+            # -------------------------------------------------------------------------------------------------------- #
+            self.Temp1Setup_groupBox = QGroupBox("Thermal cam")
+            self.Temp1Setup_groupBox.setStyleSheet('QGroupBox {font-weight: bold;}')
+            self.Temp1Setup_groupBox.setAlignment(Qt.AlignmentFlag.AlignLeft)
+
+            self.Temp1Setup_groupBox_layout = QFormLayout(self)
+            self.Temp1Setup_groupBox_layout.addRow(self.Temp1Board)
+            self.Temp1Setup_groupBox.setLayout(self.Temp1Setup_groupBox_layout)
+
+            self.main_layout.addWidget(self.Temp1Setup_groupBox, 0)
+
+            self.Temp1Board.init_vi()
+
+            self.setGeometry(0, 0, 950, 700)
         # ************************************************************************************************************ #
         # Temp #2 Setup (= MXL90614)
         elif self.setup == "Temp. #2":
@@ -87,7 +110,7 @@ class MainTask(QWidget):
                                          debug_mode=self.debug_mode,
                                          record_data=record_data)
             # -------------------------------------------------------------------------------------------------------- #
-            self.Temp2Setup_groupBox = QGroupBox("Temperature Setup #2")
+            self.Temp2Setup_groupBox = QGroupBox("Thermal sensor")
             self.Temp2Setup_groupBox.setStyleSheet('QGroupBox {font-weight: bold;}')
 
             self.Temp2Setup_groupBox_layout = QFormLayout(self)
@@ -113,7 +136,7 @@ class MainTask(QWidget):
                                    debug_mode=self.debug_mode,
                                    record_data=record_data)
             # -------------------------------------------------------------------------------------------------------- #
-            self.DxSetup_groupBox = QGroupBox("Distance Setup")
+            self.DxSetup_groupBox = QGroupBox("Distance Sensor")
             self.DxSetup_groupBox.setStyleSheet('QGroupBox {font-weight: bold;}')
 
             self.DxSetup_groupBox_layout = QFormLayout(self)
@@ -150,7 +173,9 @@ class MainTask(QWidget):
 
     ####################################################################################################################
     def data_reader_callback(self):
-        if self.setup == "Temp. #2":
+        if self.setup == "Temp. #1":
+            self.Temp1Board.data_reader_callback()
+        elif self.setup == "Temp. #2":
             self.Temp2Board.data_reader_callback()
         elif self.setup == "Distance":
             self.DxBoard.data_reader_callback()

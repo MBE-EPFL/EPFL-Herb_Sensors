@@ -76,15 +76,15 @@ class Temp2Plot(QWidget):
         self.object_value_label.setFixedWidth(60)
         # ------------------------------------------------------------------------------------------------------------ #
         # Vhv_err
-        self.err_name_label = QLabel("Error")
-        self.err_name_label.setStyleSheet("background-color: rgb{}; color: white" .format(color[9]))
-        self.err_name_label.setFixedWidth(60)
+        self.diff_name_label = QLabel("Difference")
+        self.diff_name_label.setStyleSheet("background-color: rgb{}; color: white" .format(color[9]))
+        self.diff_name_label.setFixedWidth(60)
 
         if self.scale == 'Celsius':
-            self.err_value_label = QLabel("0 °C")
+            self.diff_value_label = QLabel("0 °C")
         elif self.scale == 'Fahrenheit':
-            self.err_value_label = QLabel("0 °F")
-        self.err_value_label.setFixedWidth(60)
+            self.diff_value_label = QLabel("0 °F")
+        self.diff_value_label.setFixedWidth(60)
         # ------------------------------------------------------------------------------------------------------------ #
         self.temp_labels_layout = QVBoxLayout(self)
         self.temp_labels_layout.addWidget(self.ambient_name_label, 0, alignment=Qt.AlignmentFlag.AlignLeft)
@@ -93,8 +93,8 @@ class Temp2Plot(QWidget):
         self.temp_labels_layout.addWidget(self.object_name_label, 0, alignment=Qt.AlignmentFlag.AlignLeft)
         self.temp_labels_layout.addWidget(self.object_value_label, 0, alignment=Qt.AlignmentFlag.AlignRight)
         # self.voltage_labels_layout.addSpacerItem(QSpacerItem(10, 16))
-        self.temp_labels_layout.addWidget(self.err_name_label, 0, alignment=Qt.AlignmentFlag.AlignLeft)
-        self.temp_labels_layout.addWidget(self.err_value_label, 0, alignment=Qt.AlignmentFlag.AlignRight)
+        self.temp_labels_layout.addWidget(self.diff_name_label, 0, alignment=Qt.AlignmentFlag.AlignLeft)
+        self.temp_labels_layout.addWidget(self.diff_value_label, 0, alignment=Qt.AlignmentFlag.AlignRight)
         self.temp_labels_layout.addSpacerItem(QSpacerItem(10, 16))
         self.temp_labels_layout.addStretch(1)
         # ------------------------------------------------------------------------------------------------------------ #
@@ -111,8 +111,8 @@ class Temp2Plot(QWidget):
         if self.scale == 'Celsius':
             self.ambient_value_label.setText("{} °C".format(label1, '4.2f'))
             self.object_value_label.setText("{} °C".format(label2, '4.2f'))
-            self.err_value_label.setText("{} °C".format(label3, '4.2f'))
+            self.diff_value_label.setText("{} °C".format(label3, '4.2f'))
         elif self.scale == 'Fahrenheit':
             self.ambient_value_label.setText("{} °F".format(label1, '4.2f'))
             self.object_value_label.setText("{} °F".format(label2, '4.2f'))
-            self.err_value_label.setText("{} °F".format(label3, '4.2f'))
+            self.diff_value_label.setText("{} °F".format(label3, '4.2f'))

@@ -53,12 +53,30 @@ class ComSelect(QDialog):
         # ------------------------------------------------------------------------------------------------------------ #
         # list all available scales in the combobox for current(s) display(s)
         self.scales_comboBox = QComboBox(self)
-        self.scales_comboBox.addItems(('Celsius', 'Fahrenheit'))
+        self.scales_comboBox.addItem("Celsius")
+        self.scales_comboBox.setEnabled(False)
         self.setup_comboBox.currentTextChanged.connect(self.update_scale_combo)
+        # ------------------------------------------------------------------------------------------------------------ #
+        self.range_layout = QHBoxLayout(self)
+        self.t_min_name = QLabel("T. Min (°C):")
+        self.t_min_name.setFixedWidth(80)
+        self.range_layout.addWidget(self.t_min_name)
+        self.t_min_edit = QLineEdit("20")
+        self.t_min_edit.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.t_min_edit.setFixedWidth(50)
+        self.range_layout.addWidget(self.t_min_edit)
+        self.t_max_name = QLabel("T. Max (°C):")
+        self.t_max_name.setFixedWidth(80)
+        self.range_layout.addWidget(self.t_max_name)
+        self.t_max_edit = QLineEdit("40")
+        self.t_max_edit.setAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.t_max_edit.setFixedWidth(50)
+        self.range_layout.addWidget(self.t_max_edit)
         # ------------------------------------------------------------------------------------------------------------ #
         self.setup_groupBox_layout = QFormLayout(self)
         self.setup_groupBox_layout.addRow("Setup:", self.setup_comboBox)
         self.setup_groupBox_layout.addRow("Units:", self.scales_comboBox)
+        self.setup_groupBox_layout.addRow(self.range_layout)
         self.setup_groupBox_layout.addRow(QLabel(""))
         self.setup_groupBox_layout.addRow("Board:", self.com_port_comboBox)
         self.board_instruction_label = QLabel("Please select COM port with description: 'CSP2102'")
@@ -114,16 +132,23 @@ class ComSelect(QDialog):
     def update_scale_combo(self, text):
         self.scales_comboBox.clear()
         if text == "Temp. #1":
-            self.scales_comboBox.addItems(('Celsius', 'Fahrenheit'))
-            self.scales_comboBox.setEnabled(True)
+            self.scales_comboBox.addItem('Celsius')
+            self.scales_comboBox.setEnabled(False)
+            self.t_min_edit.setEnabled(True)
+            self.t_max_edit.setEnabled(True)
             self.board_instruction_label.setText("Please select COM port with description: 'CP210x'")
+
         elif text == "Temp. #2":
             self.scales_comboBox.addItems(('Celsius', 'Fahrenheit'))
             self.scales_comboBox.setEnabled(True)
+            self.t_min_edit.setEnabled(False)
+            self.t_max_edit.setEnabled(False)
             self.board_instruction_label.setText("Please select COM port with description: 'Arduino Micro'")
         elif text == "Distance":
             self.scales_comboBox.addItem('Millimeters')
             self.scales_comboBox.setEnabled(False)
+            self.t_min_edit.setEnabled(False)
+            self.t_max_edit.setEnabled(False)
             self.board_instruction_label.setText("Please select one of COM ports with description: 'USB Serial Device'")
 
     ####################################################################################################################
@@ -145,3 +170,9 @@ class ComSelect(QDialog):
     ####################################################################################################################
     def get_record_status(self):
         return self.record_checkBox.isChecked()
+
+    ####################################################################################################################
+    def get_range(self):
+        t_min = int(self.t_min_edit.text())
+        t_max = int(self.t_max_edit.text())
+        return t_min, t_max
