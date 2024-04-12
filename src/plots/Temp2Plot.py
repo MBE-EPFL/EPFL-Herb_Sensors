@@ -1,12 +1,12 @@
 ########################################################################################################################
-# @project    EPFL-Temp_Setup_#2
-# @file       Temp2Plot.py
+# @project    EPFL-Herb_Sensors
+# @file       MLX90614\Temp2Plot.py
 # @brief      Author:             MBE
 #             Institute:          EPFL
 #             Laboratory:         LMTS
 #             Software version:   v1.00
 #             Created on:         20.02.2024
-#             Last modifications: 20.02.2024
+#             Last modifications: 09.04.2024
 #
 # Copyright 2021/2024 EPFL-LMTS
 # All rights reserved.
@@ -18,7 +18,7 @@ from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 import pyqtgraph as pg
 # custom packages
-from src.MLX90614.ColorPlots import *
+from src.plots.ColorPlots import *
 
 pg.setConfigOption('background', 'w')
 pg.setConfigOption('foreground', 'k')

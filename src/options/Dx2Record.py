@@ -1,12 +1,12 @@
 ########################################################################################################################
-# @project    EPFL-Temp_Setup_#2
-# @file       Temp2Record.py
+# @project    EPFL-Herb_Sensors
+# @file       VLD53L4CD\DxRecord.py
 # @brief      Author:             MBE
 #             Institute:          EPFL
 #             Laboratory:         LMTS
 #             Software version:   v1.00
 #             Created on:         20.02.2024
-#             Last modifications: 20.02.2024
+#             Last modifications: 09.04.2024
 #
 # Copyright 2021/2024 EPFL-LMTS
 # All rights reserved.
@@ -21,7 +21,7 @@ from PyQt6.QtWidgets import *
 from src.Userdef import *
 
 
-class DxRecord(QWidget):
+class Dx2Record(QWidget):
     def __init__(self, parent=None, port_name=None):
 
         QWidget.__init__(self, parent=parent)
@@ -43,8 +43,8 @@ class DxRecord(QWidget):
         data_save_layout = QVBoxLayout()
         data_save_layout.addWidget(self.data_save_label)
 
-    def save_data(self, status=None, distance=None, signal=None):
-        self.file.write("{}, {}, {}, {}\n".format(datetime.now().strftime("%H:%M:%S:%f"), status, distance, signal))
+    def save_data(self, distance=None):
+        self.file.write("{}, {}\n".format(datetime.now().strftime("%H:%M:%S:%f"), distance))
 
     def close_record(self):
         self.file.close()
